@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { PageTransition } from "./components/layout/page-transition";
 import { Fraunces, DM_Sans } from "next/font/google";
 
 const headingFont = Fraunces({
@@ -34,7 +35,7 @@ export default function RootLayout({
           ${bodyFont.variable}
         `}
       >
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );
