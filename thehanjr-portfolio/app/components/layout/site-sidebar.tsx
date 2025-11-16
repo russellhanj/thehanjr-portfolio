@@ -11,8 +11,7 @@ export function SiteSidebar({ variant = "light" }: SiteSidebarProps) {
   return (
     <aside
       className={clsx(
-        // Desktop only, vertical, sticky
-        "hidden md:flex md:flex-col md:sticky md:top-10 md:self-start",
+        "hidden md:flex md:flex-col md:justify-between md:sticky md:top-10",
         isDark ? "text-artText-secondary" : "text-text-secondary"
       )}
     >
@@ -29,7 +28,7 @@ export function SiteSidebar({ variant = "light" }: SiteSidebarProps) {
 
         <nav className="space-y-3 text-sm">
           <Link
-            href="/portfolio"
+            href="/work"
             className={clsx(
               "block transition-colors",
               isDark
@@ -38,6 +37,18 @@ export function SiteSidebar({ variant = "light" }: SiteSidebarProps) {
             )}
           >
             Work
+          </Link>
+
+          <Link
+            href="/featured"
+            className={clsx(
+              "block transition-colors",
+              isDark
+                ? "hover:text-artText-primary"
+                : "hover:text-text-primary"
+            )}
+          >
+            Featured
           </Link>
 
           <Link
