@@ -12,9 +12,7 @@ export default function PortfolioPage() {
             <p className="text-xs uppercase tracking-[0.3em] text-text-secondary">
               Portfolio
             </p>
-            <h1 className="font-heading text-display-md">
-              Selected galleries
-            </h1>
+            <h1 className="font-heading text-display-md">Selected galleries</h1>
             <p className="max-w-xl text-body-lg text-text-secondary">
               A curated mix of portraits, couples, and travel images — all
               photographed with a focus on warmth, intimacy, and quiet cinematic
@@ -40,7 +38,7 @@ export default function PortfolioPage() {
                       {gallery.location}
                     </p>
                   )}
-                  <p className="mt-1 text-xs text-text-secondary line-clamp-2">
+                  <p className="mt-1 text-xs text-text-secondary">
                     {gallery.description}
                   </p>
                   <span className="mt-2 inline-block text-xs font-medium text-accent underline-offset-4 group-hover:underline">

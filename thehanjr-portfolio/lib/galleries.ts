@@ -1,4 +1,12 @@
 // lib/galleries.ts
+export type GalleryCategory =
+  | "wedding"
+  | "engagement"
+  | "portraits"
+  | "graduation"
+  | "travel"
+  | "landscape"
+  | "night-sky";
 
 export type GalleryImage = {
   src: string;
@@ -8,7 +16,7 @@ export type GalleryImage = {
 export type Gallery = {
   slug: string;
   title: string;
-  category: "portraits" | "couples" | "travel" | "other";
+  category: GalleryCategory;
   description: string;
   location?: string;
   coverImage: string;
@@ -32,7 +40,7 @@ export const galleries: Gallery[] = [
   {
     slug: "quiet-couples-at-sunset",
     title: "Quiet Couples at Sunset",
-    category: "couples",
+    category: "engagement",
     description:
       "Gentle, honest moments captured during golden hour by the water.",
     location: "Stanley Park, Vancouver",

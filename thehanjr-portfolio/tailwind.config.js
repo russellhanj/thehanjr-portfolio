@@ -4,12 +4,11 @@ module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        // brand palette
+        // Light theme (weddings / portraits)
         bg: "#F8F6F3",
         surface: "#FFFFFF",
         surfaceMuted: "#F0ECE8",
@@ -30,6 +29,15 @@ module.exports = {
           500: "#A7A29B",
           700: "#6C6862",
           900: "#2B2B2B",
+        },
+
+        // Dark / art theme (travel, landscape, night-sky)
+        artBg: "#050509",
+        artSurface: "#111118",
+        artSurfaceMuted: "#181822",
+        artText: {
+          primary: "#F5F3EF",
+          secondary: "#A3A096",
         },
       },
 
