@@ -5,49 +5,190 @@ import { PageShell } from "../components/layout/page-shell";
 import { Container } from "../components/ui/container";
 
 type InquiryType =
-  | "Weddings & Engagements"
-  | "Portraits & Graduation"
-  | "Brand / Personal project"
-  | "Other";
+  | "weddings"
+  | "portraits"
+  | "brand"
+  | "other";
+
+type CalendarPickerProps = {
+  label: string;
+  value: Date | null;
+  onChange: (date: Date | null) => void;
+  weekendOnly?: boolean;
+};
+
+function CalendarPicker({ label, value, onChange, weekendOnly }: CalendarPickerProps) {
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    const start = new Date();
+    start.setDate(1);
+    return start;
+  });
+
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth(); // 0-11
+  const firstDayOfWeek = new Date(year, month, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const monthLabel = currentMonth.toLocaleString("en-CA", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const isSameDate = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate();
+
+  const goToPrevMonth = () => {
+    const next = new Date(currentMonth);
+    next.setMonth(next.getMonth() - 1);
+    setCurrentMonth(next);
+  };
+
+  const goToNextMonth = () => {
+    const next = new Date(currentMonth);
+    next.setMonth(next.getMonth() + 1);
+    setCurrentMonth(next);
+  };
+
+  const handleSelectDay = (day: number) => {
+    const picked = new Date(year, month, day);
+
+    if (weekendOnly) {
+      const dow = picked.getDay(); // 0=Sun, 6=Sat
+      if (dow !== 0 && dow !== 6) return;
+    }
+
+    onChange(picked);
+  };
+
+  const days: (number | null)[] = [
+    ...Array.from({ length: firstDayOfWeek }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+
+  return (
+    <div className="space-y-2">
+      <label className="text-xs font-medium uppercase tracking-[0.2em] text-text-secondary">
+        {label}
+      </label>
+
+      <div className="rounded-2xl border border-gray-100 bg-surface px-4 py-3 shadow-subtle/20">
+        {/* Header: month switcher */}
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <button
+            type="button"
+            onClick={goToPrevMonth}
+            className="rounded-full px-2 py-1 text-xs text-text-secondary hover:bg-surfaceMuted"
+          >
+            ←
+          </button>
+          <p className="text-xs font-medium tracking-[0.16em] uppercase text-text-primary">
+            {monthLabel}
+          </p>
+          <button
+            type="button"
+            onClick={goToNextMonth}
+            className="rounded-full px-2 py-1 text-xs text-text-secondary hover:bg-surfaceMuted"
+          >
+            →
+          </button>
+        </div>
+
+        {/* Weekday labels */}
+        <div className="mb-1 grid grid-cols-7 gap-1 text-center text-[10px] text-text-secondary/80 uppercase tracking-[0.16em]">
+          <span>Sun</span>
+          <span>Mon</span>
+          <span>Tue</span>
+          <span>Wed</span>
+          <span>Thu</span>
+          <span>Fri</span>
+          <span>Sat</span>
+        </div>
+
+        {/* Days grid */}
+        <div className="grid grid-cols-7 gap-1 text-xs">
+          {days.map((day, index) => {
+            if (day === null) {
+              return <div key={index} className="h-8" />;
+            }
+
+            const thisDate = new Date(year, month, day);
+            const isWeekend = [0, 6].includes(thisDate.getDay());
+            const isSelected = value && isSameDate(thisDate, value);
+            const isPast =
+              thisDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const isDisabled = isPast || (weekendOnly && !isWeekend);
+
+            return (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleSelectDay(day)}
+                disabled={isDisabled}
+                className={[
+                  "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                  isSelected
+                    ? "bg-accent text-white"
+                    : isDisabled
+                    ? "text-text-secondary/30 cursor-not-allowed"
+                    : isWeekend && weekendOnly
+                    ? "text-accent hover:bg-surfaceMuted"
+                    : "text-text-primary hover:bg-surfaceMuted",
+                ].join(" ")}
+              >
+                {day}
+              </button>
+            );
+          })}
+        </div>
+
+        {weekendOnly && (
+          <p className="mt-3 text-[11px] text-text-secondary">
+            Weekend bookings only for weddings and portraits (Saturday or Sunday).
+          </p>
+        )}
+
+        {value && (
+          <p className="mt-1 text-[11px] text-text-secondary">
+            Selected:{" "}
+            {value.toLocaleDateString("en-CA", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function ContactPage() {
-  const [inquiryType, setInquiryType] = useState<InquiryType>("Weddings & Engagements");
-  const [idealDate, setIdealDate] = useState("");
-  const [dateError, setDateError] = useState<string | null>(null);
-  const [idealTimingText, setIdealTimingText] = useState("");
+  const [inquiryType, setInquiryType] = useState<InquiryType>("weddings");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [timingText, setTimingText] = useState("");
 
-  const isDateBased =
-    inquiryType === "Weddings & Engagements" ||
-    inquiryType === "Portraits & Graduation";
+  const isWeekendOnly =
+    inquiryType === "weddings" || inquiryType === "portraits";
 
-  function handleInquiryChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value as InquiryType;
-    setInquiryType(value);
+  const handleInquiryChange = (value: string) => {
+    const casted = value as InquiryType;
+    setInquiryType(casted);
 
-    // Reset date / timing fields when changing type
-    setIdealDate("");
-    setDateError(null);
-    setIdealTimingText("");
-  }
-
-  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    setIdealDate(value);
-    setDateError(null);
-
-    if (!value) return;
-
-    const selected = new Date(value + "T00:00:00"); // avoid timezone weirdness
-    const day = selected.getUTCDay(); // 0 = Sunday, 6 = Saturday
-
-    if (day !== 0 && day !== 6) {
-      setDateError("For this session type, only Saturdays and Sundays are available.");
+    // Reset depending on type
+    if (casted === "weddings" || casted === "portraits") {
+      setTimingText("");
+    } else {
+      setSelectedDate(null);
     }
-  }
+  };
 
   return (
     <PageShell>
-      <section className="pt-10 md:pt-16">
+      <section className="pt-10 md:pt-16 pb-16">
         <Container className="space-y-10 max-w-3xl">
           {/* Intro */}
           <div className="space-y-4">
@@ -96,7 +237,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Form (non-functional mockup for now) */}
+          {/* Form (mockup) */}
           <form className="space-y-6">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
@@ -122,7 +263,6 @@ export default function ContactPage() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              {/* Inquiry type */}
               <div className="space-y-2">
                 <label className="text-xs font-medium uppercase tracking-[0.2em] text-text-secondary">
                   What are you inquiring about?
@@ -130,57 +270,41 @@ export default function ContactPage() {
                 <select
                   className="w-full rounded-xl border border-gray-100 bg-surface px-3 py-2 text-sm outline-none focus:border-gray-300 focus:ring-0"
                   value={inquiryType}
-                  onChange={handleInquiryChange}
+                  onChange={(e) => handleInquiryChange(e.target.value)}
                 >
-                  <option>Weddings &amp; Engagements</option>
-                  <option>Portraits &amp; Graduation</option>
-                  <option>Brand / Personal project</option>
-                  <option>Other</option>
+                  <option value="weddings">Weddings &amp; Engagements</option>
+                  <option value="portraits">Portraits &amp; Graduation</option>
+                  <option value="brand">Brand / Personal project</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 
-              {/* Ideal date / timing */}
-              <div className="space-y-2">
-                <label className="text-xs font-medium uppercase tracking-[0.2em] text-text-secondary">
-                  Ideal date / timing
-                </label>
-
-                {isDateBased ? (
-                  <>
-                    <input
-                      type="date"
-                      className={`w-full rounded-xl border bg-surface px-3 py-2 text-sm outline-none focus:ring-0 ${
-                        dateError
-                          ? "border-red-400 focus:border-red-400"
-                          : "border-gray-100 focus:border-gray-300"
-                      }`}
-                      value={idealDate}
-                      onChange={handleDateChange}
-                    />
-                    <p className="text-[11px] text-text-secondary">
-                      For weddings, engagements, portraits, and graduations,
-                      sessions are available on <span className="font-medium">Saturdays and Sundays only</span>.
-                    </p>
-                    {dateError && (
-                      <p className="text-[11px] text-red-500">{dateError}</p>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <input
-                      type="text"
-                      className="w-full rounded-xl border border-gray-100 bg-surface px-3 py-2 text-sm outline-none focus:border-gray-300 focus:ring-0"
-                      placeholder="Share rough dates, months, or preferred days"
-                      value={idealTimingText}
-                      onChange={(e) => setIdealTimingText(e.target.value)}
-                    />
-                    <p className="text-[11px] text-text-secondary">
-                      Feel free to mention a month, weekday preferences, or
-                      general availability.
-                    </p>
-                  </>
-                )}
-              </div>
+              {/* Conditional timing field */}
+              {isWeekendOnly ? (
+                <CalendarPicker
+                  label="Ideal date"
+                  value={selectedDate}
+                  onChange={setSelectedDate}
+                  weekendOnly
+                />
+              ) : (
+                <div className="space-y-2">
+                  <label className="text-xs font-medium uppercase tracking-[0.2em] text-text-secondary">
+                    Ideal timing
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full rounded-xl border border-gray-100 bg-surface px-3 py-2 text-sm outline-none focus:border-gray-300 focus:ring-0"
+                    placeholder="Exact date, month, or general timeframe"
+                    value={timingText}
+                    onChange={(e) => setTimingText(e.target.value)}
+                  />
+                  <p className="text-[11px] text-text-secondary">
+                    For brand / personal projects, rough timing is totally okay
+                    (season, month, or after a specific event).
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
