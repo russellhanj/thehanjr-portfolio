@@ -1,65 +1,139 @@
 import Image from "next/image";
+import { PageShell } from "./components/layout/page-shell";
+import { Container } from "./components/ui/container";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <PageShell>
+      {/* Hero */}
+      <section className="pt-10 md:pt-16">
+        <Container className="grid gap-10 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] md:items-center">
+          {/* Text side */}
+          <div className="space-y-6">
+            <p className="text-xs font-medium uppercase tracking-[0.3em] text-text-secondary">
+              Vancouver Photographer
+            </p>
+
+            <h1 className="font-heading text-display-lg leading-tight text-balance">
+              Cinematic, calm photography
+              <span className="block text-accent">
+                for real moments and real people.
+              </span>
+            </h1>
+
+            <p className="text-body-lg text-text-secondary max-w-prose">
+              I am Russell, a Vancouver-based photographer who loves soft light,
+              honest emotions, and images that feel like still frames from your
+              favorite film.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <button className="inline-flex items-center rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-white shadow-subtle hover:bg-accent-dark transition-colors">
+                Book a session
+              </button>
+              <button className="text-sm text-text-secondary underline-offset-4 hover:underline">
+                View portfolio
+              </button>
+            </div>
+          </div>
+
+          {/* Image mock */}
+          <div className="relative h-64 md:h-80 lg:h-96">
+            <div className="absolute inset-0 rounded-2xl bg-gray-100" />
+            <div className="absolute inset-4 rounded-2xl bg-gray-300" />
+            {/* Later: replace with real <Image> component */}
+          </div>
+        </Container>
+      </section>
+
+      {/* Featured galleries */}
+      <section className="mt-16 md:mt-20">
+        <Container className="space-y-8">
+          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-text-secondary">
+                Selected Work
+              </p>
+              <h2 className="font-heading text-display-sm">Galleries</h2>
+              <h2 className="font-heading text-display-sm">A calm approach to storytelling</h2>
+              <h2 className="font-heading text-display-sm">
+                Ready to make something together?
+              </h2>
+            </div>
+            <p className="max-w-md text-sm text-text-secondary">
+              A mix of portraits, couples, and travel stories — all photographed
+              with a focus on warmth, intimacy, and quiet cinematic details.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              { title: "Portraits", description: "Soft, honest, everyday moments." },
+              { title: "Couples", description: "Stories of connection and presence." },
+              { title: "Travel", description: "Places that linger in your memory." },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="group flex flex-col overflow-hidden rounded-2xl bg-surface shadow-subtle/40"
+              >
+                <div className="h-40 bg-gray-200 group-hover:bg-gray-300 transition-colors" />
+                <div className="space-y-1 px-4 py-4">
+                  <h3 className="text-sm font-semibold">{item.title}</h3>
+                  <p className="text-xs text-text-secondary">{item.description}</p>
+                  <button className="mt-2 text-xs font-medium text-accent underline-offset-4 group-hover:underline">
+                    View gallery
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* About teaser */}
+      <section className="mt-16 md:mt-24">
+        <Container className="grid gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center">
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-text-secondary">
+              About
+            </p>
+            <h2 className="text-display-sm">A calm approach to storytelling</h2>
+            <p className="text-body text-text-secondary max-w-prose">
+              I enjoy making people feel at ease in front of the camera. My work
+              is less about perfect poses and more about the quiet, in-between
+              frames that show who you really are.
+            </p>
+            <p className="text-body text-text-secondary max-w-prose">
+              Whether we’re walking through the city at sunset or exploring a
+              quieter corner of Vancouver, my goal is to create images that feel
+              like you — honest, soft, and timeless.
+            </p>
+            <button className="text-sm text-accent underline-offset-4 hover:underline">
+              Read more about me
+            </button>
+          </div>
+
+          <div className="h-56 rounded-2xl bg-gray-100 md:h-72" />
+        </Container>
+      </section>
+
+      {/* Call to action */}
+      <section className="mt-16 md:mt-24 mb-16">
+        <Container className="rounded-2xl bg-surfaceMuted px-6 py-10 md:px-10 md:py-12 shadow-subtle">
+          <div className="space-y-4 md:max-w-2xl">
+            <h2 className="text-display-sm">
+              Ready to make something together?
+            </h2>
+            <p className="text-body text-text-secondary">
+              Tell me a bit about what you&apos;re dreaming of — a portrait
+              session, a quiet couple shoot, or images for your personal brand.
+            </p>
+            <button className="inline-flex items-center rounded-full bg-accent px-6 py-2.5 text-sm font-medium text-white shadow-subtle hover:bg-accent-dark transition-colors">
+              Start a booking
+            </button>
+          </div>
+        </Container>
+      </section>
+    </PageShell>
   );
 }
