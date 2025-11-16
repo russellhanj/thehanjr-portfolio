@@ -1,7 +1,11 @@
 import clsx from "clsx";
 import { Container } from "../ui/container";
 
-export function SiteFooter({ variant = "light" }: { variant?: "light" | "dark" }) {
+export function SiteFooter({
+  variant = "light",
+}: {
+  variant?: "light" | "dark";
+}) {
   const isDark = variant === "dark";
 
   return (
@@ -10,7 +14,7 @@ export function SiteFooter({ variant = "light" }: { variant?: "light" | "dark" }
         "mt-16 py-6",
         isDark
           ? "bg-artBg text-artText-secondary"
-          : "bg-surface border-t border-gray-100 text-text-secondary"
+          : "bg-bg text-text-secondary" // <-- changed from bg-surface
       )}
     >
       <Container className="flex flex-col gap-3 text-xs md:flex-row md:items-center md:justify-between">

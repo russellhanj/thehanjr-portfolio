@@ -2,15 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ----- Base theme + scroll variables ----- */
+
 :root {
   color-scheme: light;
+  --scroll-thumb: #1a1a1a;
+  --scroll-track: #e9e6e2;
 }
 
-/* Optional helper */
+/* Light theme hook */
+.theme-light {
+  color-scheme: light;
+  --scroll-thumb: #1a1a1a;
+  --scroll-track: #e9e6e2;
+}
+
+/* Dark theme hook */
+.theme-dark {
+  color-scheme: dark;
+  --scroll-thumb: #f5f3ef;
+  --scroll-track: #050509;
+}
+
+/* Typography helper */
 .text-balance {
   text-wrap: balance;
 }
 
+/* Body base */
 body {
   @apply bg-bg text-text-primary font-body antialiased;
+}
+
+/* ----- Global scrollbar styling (uses CSS variables above) ----- */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+  border-radius: 999px;
+}
+
+/* Optional legacy classes (only if you still want them somewhere) */
+.scrollbar-light::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+}
+.scrollbar-dark::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
 }

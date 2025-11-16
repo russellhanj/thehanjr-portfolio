@@ -8,13 +8,13 @@ export function SiteHeader({ variant = "light" }: { variant?: "light" | "dark" }
   return (
     <header
       className={clsx(
-        "py-4",
+        "md:hidden border-b",
         isDark
-          ? "bg-artBg text-artText-primary"
-          : "bg-bg/80 border-b border-gray-100 text-text-primary"
+          ? "bg-artBg border-artSurface text-artText-primary"
+          : "bg-bg/80 border-gray-100 text-text-primary"
       )}
     >
-      <Container className="flex items-center justify-between">
+      <Container className="flex items-center justify-between py-4">
         <Link
           href="/"
           className={clsx(
@@ -25,7 +25,7 @@ export function SiteHeader({ variant = "light" }: { variant?: "light" | "dark" }
           thehanjr
         </Link>
 
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="flex items-center gap-4 text-sm">
           <Link
             href="/portfolio"
             className={clsx(
@@ -47,12 +47,6 @@ export function SiteHeader({ variant = "light" }: { variant?: "light" | "dark" }
             )}
           >
             About
-          </Link>
-          <Link
-            href="/contact"
-            className="rounded-full bg-accent px-4 py-1.5 text-xs font-medium text-white shadow-subtle hover:bg-accent-dark transition-colors"
-          >
-            Book a session
           </Link>
         </nav>
       </Container>
