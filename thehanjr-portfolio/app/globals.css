@@ -6,6 +6,7 @@
   color-scheme: light;
 }
 
+/* Optional helper */
 .text-balance {
   text-wrap: balance;
 }

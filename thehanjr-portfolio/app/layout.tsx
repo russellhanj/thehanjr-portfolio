@@ -30,8 +30,8 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`
-          ${headingFont.variable} 
-          ${bodyFont.variable} 
+          ${headingFont.variable}
+          ${bodyFont.variable}
         `}
       >
         {children}
